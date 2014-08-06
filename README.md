@@ -13,15 +13,19 @@ pre-requisite
 
 DB Scripts
 ==========
+```
 $ create database topicdb;
 
 $ create table message_lock ( id int(10) not null auto_increment, message_id varchar(50) not null, message_consumer_id varchar(50) not null, primary key (id));
 
 $ alter table message_lock add unique (message_id);
+```
 
 Build application
 =================
+```
 /cms $ mvn clean install
+```
 
 Running cms topic listener
 ==========================
