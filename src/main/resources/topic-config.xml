@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.5.0.xsd">
+
+	<!-- activemq connection factory -->
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg index="0" value="tcp://0.0.0.0:61616" />
+	</bean>
+
+	<!-- spring cf Definition -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+	<!-- Topic Definition -->
+	<bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg index="0" value="TEST_TOPIC" />
+	</bean>
+
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="topic" />
+	</bean>
+
+	<bean id="messageReceiver" class="com.ebayinc.cms.processor.TopicListener" />
+	
+	<!-- The Spring message listener container configuration for Topic -->
+	<jms:listener-container destination-type="topic"
+		container-type="default" connection-factory="connectionFactory"
+		acknowledge="auto">
+		<jms:listener destination="TEST_TOPIC" ref="messageReceiver"
+			method="onMessage"/>
+	</jms:listener-container>
+	
+	<!-- instance name mapping -->
+	<bean id="consumerId" class="java.lang.String">
+		<constructor-arg value="${consumerId}" />
+	</bean>
+	
+	<context:annotation-config />
+	<context:component-scan base-package="com.ebayinc.cms.processor" />
+
+	<!-- Using spring hook to run recovery of messages - incomplete <bean id="beanFactoryPostProcessor" 
+		class="com.ebayinc.cms.processor.RecoveryProcessor"/> -->
+</beans>
