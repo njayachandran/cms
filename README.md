@@ -20,6 +20,7 @@ $ create table message_lock ( id int(10) not null auto_increment, message_id var
 
 $ alter table message_lock add unique (message_id);
 ```
+* Make sure the db server has the credentials specified in jdbc.properties, else update actual credential in property file
 
 Build application
 =================
