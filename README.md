@@ -25,6 +25,8 @@ Build application
 
 Running cms topic listener
 ==========================
-move cms jar and libraries to a folder for e.g. /ebay/gpf/cms1
-make sure consumerId is unique
-$ java -classpath cms-0.0.1-SNAPSHOT.jar:lib* -Dcms_home=/ebay/gpf/cms1 -DconsumerId=cms1 com.ebayinc.cms.Driver
+* move cms jar and libraries to a folder for e.g. /ebay/gpf/cms1
+
+* make sure consumerId is unique
+
+*$ java -classpath cms-0.0.1-SNAPSHOT.jar:lib* -Dcms_home=/ebay/gpf/cms1 -DconsumerId=cms1 com.ebayinc.cms.Driver
