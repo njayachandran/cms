@@ -29,4 +29,4 @@ Running cms topic listener
 
 * make sure consumerId is unique
 
-*$ java -classpath cms-0.0.1-SNAPSHOT.jar:lib* -Dcms_home=/ebay/gpf/cms1 -DconsumerId=cms1 com.ebayinc.cms.Driver
+*$ java -classpath cms-0.0.1-SNAPSHOT.jar:lib\* -Dcms_home=/ebay/gpf/cms1 -DconsumerId=cms1 com.ebayinc.cms.Driver
